@@ -1,0 +1,57 @@
+```{r depedencies}
+
+library(tidyverse)
+library(janitor)
+```
+
+```{r import data and tidy}
+
+# Read data
+df <-  read_csv("./data/Argentina-tiny-clean.csv")
+
+df <- clean_names(df)
+
+# Drop country cols
+df <- df %>% 
+  select(-c(country_name, country_code, indicator_code))
+
+# Pivot wider
+# 
+# df %>% 
+#   pivot_wider(id_cols = c(indicator_name, indicator_code),
+#               names_from = indicator_name,
+#               values_from = year)
+
+# df %>% 
+#   pivot_longer(cols = 3:65,
+#                names_to = "year",
+#                values_to = "value")
+
+# Tidy data
+df_cleaning <- as.data.frame(t(df))
+
+colnames(df_cleaning) <- df_cleaning[1,]
+df_cleaning <- df_cleaning[-1,]
+df_cleaning$year <- rownames(df_cleaning)
+rownames(df_cleaning) <- NULL
+
+# Reorganize columns and take out 'x' in year values
+df_cleaning <- df_cleaning %>% 
+            select(year, everything())
+
+df_cleaning$year <-  gsub("^x","", df_cleaning$year)
+            
+  
+# Finally
+df_cleaning
+
+
+```
+Further cleaning will be done in Python
+
+```{r save df}
+
+write_csv(df_cleaning, "./data/Argentina-cleaner1.csv")
+
+```
+
