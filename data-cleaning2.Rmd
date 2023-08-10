@@ -1,0 +1,141 @@
+---
+title: "data-cleaning2"
+author: "Bilal Abdul Hak"
+date: "2023-08-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(janitor)
+```
+
+## Preperation
+
+```{r load}
+# Data from world bank
+df <- read_csv("./data/aus-bra-leb.csv")
+
+df <- clean_names(df)
+
+head(df)
+tail(df)
+```
+
+```{r seperate df to 3 countries}
+
+#
+
+# Australia
+aus <- df %>% 
+          filter(country_name == "Australia")
+          
+# Brazil
+bra <- df %>% 
+          filter(country_name == "Brazil")
+
+# Lebanon
+leb <- df %>% 
+          filter(country_name == "Lebanon")
+
+```
+
+```{r aus prepare}
+
+# Transpose
+aus <- as.data.frame(t(aus))
+
+# drop rows 1,2, and 4
+aus <- aus[c(-1,-2,-4),]
+
+# Assign indicators to colnames 
+colnames(aus) <- aus[1,]
+
+# Remove redundant row
+aus <- aus[-1,]
+
+# Extract index as separate column
+aus$year <- rownames(aus)
+aus <- aus %>% 
+            select(year, everything())
+rownames(aus) <- NULL
+
+# remove x in year
+aus$year <- gsub("^x", "", aus$year)
+
+# export
+write_csv(aus, "./data/australia.csv")
+
+aus %>% 
+  head()
+
+```
+
+```{r bra prepare}
+
+
+# Transpose
+bra <- as.data.frame(t(bra))
+
+# drop rows 1,2, and 4
+bra <- bra[c(-1,-2,-4),]
+
+# Assign indicators to colnames 
+colnames(bra) <- bra[1,]
+
+# Remove redundant row
+bra <- bra[-1,]
+
+# Extract index as separate column
+bra$year <- rownames(bra)
+bra <- bra %>% 
+            select(year, everything())
+rownames(bra) <- NULL
+
+# remove x in year
+bra$year <- gsub("^x", "", bra$year)
+
+# export
+write_csv(bra, "./data/brazil.csv")
+
+bra %>% 
+  head()
+
+
+```
+
+```{r leb prepare}
+
+
+# Transpose
+leb <- as.data.frame(t(leb))
+
+# drop rows 1,2, and 4
+leb <- leb[c(-1,-2,-4),]
+
+# Assign indicators to colnames 
+colnames(leb) <- leb[1,]
+
+# Remove redundant row
+leb <- leb[-1,]
+
+# Extract index as separate column
+leb$year <- rownames(leb)
+leb <- leb %>% 
+            select(year, everything())
+rownames(leb) <- NULL
+
+# remove x in year
+leb$year <- gsub("^x", "", leb$year)
+
+# export
+write_csv(leb, "./data/lebanon.csv")
+
+leb %>% 
+  head()
+
+
+```
+
