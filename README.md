@@ -5,6 +5,8 @@ This project analyzes and addresses the macroeconomic situation of Argentina in 
 
 ![AD-AS model](report-analysis/plots/macro_AD-AS2A.png)
 
+![gdpVinflation](report-analysis/plots/gdpVinflation.png)
+
 The results found that a combination of diminished aggregate supply and unrestricted aggregate demand caused a decline in output but a substantial rise in inflation. The analysis concludes with a policy recommendation of improved and consistent contractionary fiscal policies.
 
 The full report can be found in `report-analysis/report.docx`
